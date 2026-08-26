@@ -1,0 +1,30 @@
+{
+  "name": "virtual-music-kit",
+  "version": "1.0.0",
+  "description": "Virtual Music Kit",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "eslint .",
+    "format": "prettier . --write"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andrewfroze/virtual-music-kit.git"
+  },
+  "keywords": [],
+  "bugs": {
+    "url": "https://github.com/andrewfroze/virtual-music-kit/issues"
+  },
+  "homepage": "https://github.com/andrewfroze/virtual-music-kit#readme",
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.9.1",
+    "prettier": "^3.9.6",
+    "sass": "^1.103.1",
+    "vite": "^8.2.2"
+  }
+}
