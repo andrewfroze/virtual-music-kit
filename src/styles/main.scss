@@ -1,5 +1,120 @@
 $background-color: #ffffff;
+$piano-color: #ffffff;
+$piano-border-color: #e3e2e2;
+$piano-light-key-color: #ffffff;
+$piano-light-key-hover-color: #ffffffbd;
+$piano-light-key-active-color: #ffb0b0c5;
+$piano-dark-key-color: #000000;
+$piano-dark-key-hover-color: #424242;
+$piano-dark-key-active-color: #001076;
+
+$piano-keys-holder-color: #000000;
+
+html {
+  font-size: 3vw;
+}
 
 body {
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
   background-color: $background-color;
+  padding: 1rem;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 10vh;
+  align-items: center;
+  justify-content: center;
+}
+
+.piano {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  box-sizing: border-box;
+
+  width: fit-content;
+  height: fit-content;
+
+  border: 2px solid $piano-border-color;
+  border-radius: 2rem;
+  background-color: $piano-color;
+}
+
+.piano__control-panel {
+  flex-grow: 1;
+}
+
+.piano__keys-holder {
+  position: relative;
+  width: fit-content;
+  height: fit-content;
+  flex-grow: 1.5;
+  background-color: $piano-keys-holder-color;
+  border-radius: 0.6rem;
+  margin: 1rem;
+  padding: 0.2rem;
+}
+
+.piano__keys-holder__light-key-holder {
+  display: flex;
+  gap: 0.3vw;
+
+  .piano__keys-holder__light-key {
+    &:first-child {
+      border-top-left-radius: 1.5vw;
+    }
+
+    &:last-child {
+      border-top-right-radius: 1.5vw;
+    }
+  }
+}
+
+.piano__keys-holder__light-key {
+  flex: 0 0 auto;
+  width: 8vw;
+  min-width: 30px;
+  max-width: 100px;
+  height: 50vh;
+  background-color: $piano-light-key-color;
+  border-bottom-left-radius: 1.5vw;
+  border-bottom-right-radius: 1.5vw;
+
+  &:hover {
+    background-color: $piano-light-key-hover-color;
+  }
+
+  &:active {
+    background-color: $piano-light-key-active-color;
+  }
+}
+
+.piano__keys-holder__dark-key-holder {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.piano_keys-holder__dark-key-holder__dark-key {
+  pointer-events: auto;
+  position: absolute;
+  height: 28vh;
+  width: 4vw;
+  min-width: 15px;
+  max-width: 50px;
+  background-color: $piano-dark-key-color;
+  border-bottom-left-radius: 1vw;
+  border-bottom-right-radius: 1vw;
+  margin-top: 0.2rem;
+  transform: translateX(-50%);
+
+  &:hover {
+    background-color: $piano-dark-key-hover-color;
+  }
+
+  &:active {
+    background-color: $piano-dark-key-active-color;
+  }
 }
