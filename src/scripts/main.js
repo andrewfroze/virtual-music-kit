@@ -47,12 +47,9 @@ for (let i = 0; i < lightKeysCount; i += 1) {
       const darkKey = document.createElement("div");
       darkKey.className = "piano_keys-holder__dark-key-holder__dark-key";
 
-      const previousKeyRect = lightKeys[i - 1].getBoundingClientRect();
-      const currentKeyRect = lightKeys[i].getBoundingClientRect();
-      const gapCenter = (currentKeyRect.left + previousKeyRect.right) / 2;
+      darkKey.dataset.index = i;
+      darkKey.style.left = `${getDarkKeyLeft(i)}px`;
 
-      const left = gapCenter - pianoKeysHolder.getBoundingClientRect().left;
-      darkKey.style.left = `${left}px`;
       darkKeys.push(darkKey);
       darkKeysHolder.append(darkKey);
 
@@ -69,4 +66,20 @@ for (let i = 0; i < lightKeysCount; i += 1) {
       }
     }
   }
+}
+
+window.addEventListener('resize', () => {
+  darkKeys.forEach((darkKey) => {
+    const index = Number(darkKey.dataset.index);
+
+    darkKey.style.left = `${getDarkKeyLeft(index)}px`;
+  });
+});
+
+function getDarkKeyLeft(index) {
+  const previousKeyRect = lightKeys[index - 1].getBoundingClientRect();
+  const currentKeyRect = lightKeys[index].getBoundingClientRect();
+  const gapCenter = (currentKeyRect.left + previousKeyRect.right) / 2;
+
+  return gapCenter - pianoKeysHolder.getBoundingClientRect().left;
 }
