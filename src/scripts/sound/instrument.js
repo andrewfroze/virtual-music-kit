@@ -1,4 +1,6 @@
-import { Piano } from "./piano";
+import { Piano } from './piano';
+import { Synth } from './synth';
+import { Custom } from './custom';
 
 const notes = [
   261.63, // C4
@@ -10,28 +12,50 @@ const notes = [
   493.88, // B4
 ];
 
-const audioContext = new window.AudioContext;
-const piano = new Piano(audioContext);
 
-function getNoteFrequency(index) {
-  if (index < 0 || index > notes.length - 1) {
-    console.log(`Unknown note ignored. Index: ${index}`);
-    return;
+class Instrument {
+
+  constructor() {
+    this.audioContext = new window.AudioContext;
+    this.piano = new Piano(this.audioContext);
+    this.synth = new Synth(this.audioContext);
+    this.custom = new Custom(this.audioContext);
+    this.active = this.piano;
   }
-  return notes[index];
-}
 
-function playNote(index) {
-  const frequency = getNoteFrequency(index);
-  piano.playNote(frequency);
-}
-
-function playNoteBetween(previous, next) {
-  const previousFrequency = getNoteFrequency(previous);
-  const nextFrequency = getNoteFrequency(next);
-  if (previousFrequency && nextFrequency) {
-    piano.playNote((previousFrequency + nextFrequency) / 2);
+  changeTo(instrument) {
+    switch (instrument) {
+      case 'custom':
+        this.active = this.custom;
+        break;
+      case 'synth':
+        this.active = this.synth;
+        break;
+      default:
+        this.active = this.piano;
+    }
   }
-}
 
-export { playNote, playNoteBetween }
+  getNoteFrequency(index) {
+    if (index < 0 || index > notes.length - 1) {
+        console.log(`Unknown note ignored. Index: ${index}`);
+        return;
+    }
+    return notes[index];
+  }
+
+  playNote(index) {
+    const frequency = this.getNoteFrequency(index);
+    this.active.playNote(frequency);
+  }
+
+  playNoteBetween(previous, next) {
+    const previousFrequency = this.getNoteFrequency(previous);
+    const nextFrequency = this.getNoteFrequency(next);
+    if (previousFrequency && nextFrequency) {
+        this.active.playNote((previousFrequency + nextFrequency) / 2);
+    }
+  }
+
+}
+export { Instrument }
