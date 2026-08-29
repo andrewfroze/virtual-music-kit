@@ -1,6 +1,7 @@
 import '../styles/main.scss';
 import { Instrument } from './sound/instrument';
 import { PianoMod } from './piano-mod';
+import { keyboard } from './keyboard/keyboard';
 
 const lightKeysCount = 7;
 const pianoMods = [
@@ -77,6 +78,13 @@ for (let i = 0; i < lightKeysCount; i += 1) {
     instrument.playNote(i);
   });
 
+  const assignedKey = keyboard.assignedLightKeys[i];
+  const lightKeyAssignedKeyLabel = document.createElement('label');
+  lightKeyAssignedKeyLabel.className = 'piano__keys-holder__light-key__assigned-key-label';
+  lightKeyAssignedKeyLabel.textContent = assignedKey.getKeyLabel();
+  lightKey.append(lightKeyAssignedKeyLabel);
+  assignedKey.assignNewElement(lightKey);
+
   if (i > 0) {
     if (
       currentDarkKeyInsertedCount <
@@ -93,7 +101,7 @@ for (let i = 0; i < lightKeysCount; i += 1) {
 
       darkKey.addEventListener('mousedown', () => {
         instrument.playNoteBetween(i - 1, i);
-      })
+      });
 
       currentDarkKeyInsertedCount += 1;
     } else {
@@ -105,6 +113,15 @@ for (let i = 0; i < lightKeysCount; i += 1) {
     }
   }
 }
+
+darkKeys.forEach((darkKey, i) => {
+  const assignedKey = keyboard.assignedDarkKeys[i];
+  const darkKeyAssignedKeyLabel = document.createElement('label');
+  darkKeyAssignedKeyLabel.className = 'piano__keys-holder__dark-key__assigned-key-label';
+  darkKeyAssignedKeyLabel.textContent = assignedKey.getKeyLabel();
+  darkKey.append(darkKeyAssignedKeyLabel);
+  assignedKey.assignNewElement(darkKey);
+})
 
 window.addEventListener('resize', () => {
   darkKeys.forEach((darkKey) => {

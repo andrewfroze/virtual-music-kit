@@ -4,14 +4,18 @@ $piano-border-color: #e3e2e2;
 $piano-light-key-color: #ffffff;
 $piano-light-key-hover-color: #ffffffbd;
 $piano-light-key-active-color: #ffb0b0c5;
+$piano-light-key-assigned-key-background-color: #000000;
+$piano-light-key-assigned-key-text-color: #ffffff;
 $piano-dark-key-color: #000000;
 $piano-dark-key-hover-color: #424242;
 $piano-dark-key-active-color: #001076;
+$piano-dark-key-assigned-key-background-color: #ffffff;
+$piano-dark-key-assigned-key-text-color: #000000;
 
 $piano-keys-holder-color: #000000;
 
 html {
-  font-size: 18px;
+  font-size: 1.5vw;
 }
 
 body {
@@ -99,11 +103,15 @@ body {
   background-color: $piano-light-key-color;
   border-bottom-left-radius: 1.5vw;
   border-bottom-right-radius: 1.5vw;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
 
   &:hover {
     background-color: $piano-light-key-hover-color;
   }
 
+  &.active,
   &:active {
     background-color: $piano-light-key-active-color;
   }
@@ -127,12 +135,39 @@ body {
   border-bottom-right-radius: 1vw;
   margin-top: .5vh;
   transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
 
   &:hover {
     background-color: $piano-dark-key-hover-color;
   }
 
+  &.active,
   &:active {
     background-color: $piano-dark-key-active-color;
   }
+}
+
+.piano__keys-holder__dark-key__assigned-key-label,
+.piano__keys-holder__light-key__assigned-key-label {
+  width: 30%;
+  aspect-ratio: 1 / 1;
+  padding: 4px;
+  border-radius: 50%;
+  margin-bottom: 1vh;
+  text-align: center;
+  align-content: center;
+}
+
+.piano__keys-holder__light-key__assigned-key-label {
+  font-size: 100%;
+  color: $piano-light-key-assigned-key-text-color;
+  background-color: $piano-light-key-assigned-key-background-color;
+}
+
+.piano__keys-holder__dark-key__assigned-key-label {
+  font-size: 70%;
+  color: $piano-dark-key-assigned-key-text-color;
+  background-color: $piano-dark-key-assigned-key-background-color;
 }
