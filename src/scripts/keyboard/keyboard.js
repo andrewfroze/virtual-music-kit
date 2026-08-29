@@ -32,20 +32,26 @@ class Keyboard {
 const defaultKeyboard = new Keyboard();
 
 window.addEventListener('keydown', (event) => {
-  if (event.repeat) {
-    return;
-  }
-  const assignedKey = defaultKeyboard.findAssignedKey(event.code);
-  if (assignedKey) {
-    assignedKey.element.dispatchEvent(new MouseEvent('mousedown'));
-    assignedKey.element.classList.add('active');
+  if (!defaultKeyboard.activeAssignedKey) {
+    if (event.repeat) {
+      return;
+    }
+    const assignedKey = defaultKeyboard.findAssignedKey(event.code);
+    if (assignedKey) {
+      assignedKey.element.dispatchEvent(new MouseEvent('mousedown'));
+      assignedKey.element.classList.add('active');
+      defaultKeyboard.activeAssignedKey = assignedKey;
+    }
   }
 });
 
 window.addEventListener('keyup', (event) => {
-  const assignedKey = defaultKeyboard.findAssignedKey(event.code);
-  if (assignedKey) {
-    assignedKey.element.classList.remove('active');
+  if (defaultKeyboard.activeAssignedKey && defaultKeyboard.activeAssignedKey.code === event.code) {
+    const assignedKey = defaultKeyboard.findAssignedKey(event.code);
+    if (assignedKey) {
+      assignedKey.element.classList.remove('active');
+      defaultKeyboard.activeAssignedKey = undefined;
+    }
   }
 });
 
