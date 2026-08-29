@@ -156,18 +156,22 @@ body {
   padding: 4px;
   border-radius: 50%;
   margin-bottom: 1vh;
-  text-align: center;
-  align-content: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
 }
 
 .piano__keys-holder__light-key__assigned-key-label {
   font-size: 100%;
+  min-width: 2vw;
   color: $piano-light-key-assigned-key-text-color;
   background-color: $piano-light-key-assigned-key-background-color;
 }
 
 .piano__keys-holder__dark-key__assigned-key-label {
   font-size: 70%;
+  min-width: 1.5vw;
   color: $piano-dark-key-assigned-key-text-color;
   background-color: $piano-dark-key-assigned-key-background-color;
 }
