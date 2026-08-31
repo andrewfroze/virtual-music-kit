@@ -2,20 +2,12 @@ import { Piano } from './piano';
 import { Synth } from './synth';
 import { Custom } from './custom';
 
-const notes = [
-  261.63, // C4
-  293.66, // D4
-  329.63, // E4
-  349.23, // F4
-  392.00, // G4
-  440.00, // A4
-  493.88, // B4
-];
-
+const whiteKeySemitones = [0, 2, 4, 5, 7, 9, 11];
 
 class Instrument {
 
   constructor() {
+    this.baseFrequency = 261.63;
     this.audioContext = new window.AudioContext;
     this.piano = new Piano(this.audioContext);
     this.synth = new Synth(this.audioContext);
@@ -37,11 +29,16 @@ class Instrument {
   }
 
   getNoteFrequency(index) {
-    if (index < 0 || index > notes.length - 1) {
-        console.log(`Unknown note ignored. Index: ${index}`);
+    if (index < 0) {
+        console.log(`Invalid note index. Index: ${index}`);
         return;
     }
-    return notes[index];
+    const octave = Math.floor(index / 7);
+    const noteIndex = index % 7;
+
+    const semitone = octave * 12 + whiteKeySemitones[noteIndex];
+
+    return this.baseFrequency * 2 ** (semitone / 12);
   }
 
   playNote(index) {
@@ -49,12 +46,12 @@ class Instrument {
     this.active.playNote(frequency);
   }
 
-  playNoteBetween(previous, next) {
+  playSemitoneAfter(previous) {
     const previousFrequency = this.getNoteFrequency(previous);
-    const nextFrequency = this.getNoteFrequency(next);
-    if (previousFrequency && nextFrequency) {
-        this.active.playNote((previousFrequency + nextFrequency) / 2);
-    }
+
+    this.active.playNote(
+      previousFrequency * 2 ** (1 / 12)
+    );
   }
 
 }

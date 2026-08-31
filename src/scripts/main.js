@@ -138,7 +138,7 @@ for (let i = 0; i < lightKeysCount; i += 1) {
       darkKeysHolder.append(darkKey);
 
       darkKey.addEventListener('mousedown', () => {
-        instrument.playNoteBetween(i - 1, i);
+        instrument.playSemitoneAfter(i - 1);
       });
 
       currentDarkKeyInsertedCount += 1;
