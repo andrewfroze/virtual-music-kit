@@ -27,6 +27,10 @@ class Keyboard {
       }
     }
   }
+
+  getAssignedSoundKeys() {
+    return [...this.assignedLightKeys, ...this.assignedDarkKeys].map((key) => key.getKeyLabel());
+  }
 }
 
 const defaultKeyboard = new Keyboard();

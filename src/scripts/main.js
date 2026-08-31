@@ -2,8 +2,10 @@ import '../styles/main.scss';
 import { Instrument } from './sound/instrument';
 import { PianoMod } from './piano-mod';
 import { keyboard } from './keyboard/keyboard';
+import { getRandomValueFromArray } from './random';
 
-const lightKeysCount = 7;
+const exampleNotesCount = 5;
+const lightKeysCount = 20;
 const pianoMods = [
   new PianoMod('Piano', 'piano'),
   new PianoMod('Synth', 'synth'),
@@ -48,12 +50,43 @@ pianoMods.forEach((mod, index) => {
   });
 });
 
+const pianoMelodyContainer = document.createElement('div');
+pianoMelodyContainer.className = 'piano__control-panel__mode-panel-holder__melody-container';
+controlPanel.append(pianoMelodyContainer);
+
+const pianoMelodyLabel = document.createElement('label');
+pianoMelodyLabel.textContent = "Type your melody here:";
+pianoMelodyLabel.className = 'piano__control-panel__mode-panel-holder__melody-container__piano-melody-label';
+pianoMelodyContainer.append(pianoMelodyLabel);
+
+const pianoMelodyInput = document.createElement('input');
+pianoMelodyInput.placeholder = `Example: ${getMelodyExample()}`;
+pianoMelodyInput.className = 'piano__control-panel__mode-panel-holder__melody-container__piano-melody-input';
+pianoMelodyContainer.append(pianoMelodyInput);
+
+const pianoMelodyPlayButton = document.createElement('button');
+pianoMelodyPlayButton.textContent = 'Play';
+pianoMelodyPlayButton.className = 'piano__control-panel__mode-panel-holder__melody-container__piano-melody-play-button';
+pianoMelodyContainer.append(pianoMelodyPlayButton);
+
+function getMelodyExample() {
+  const exampleNotes = [];
+  const availableNotes = keyboard.getAssignedSoundKeys();
+  for (let i = 0; i < exampleNotesCount; i += 1) {
+    exampleNotes.push(getRandomValueFromArray(availableNotes));
+  }
+  return exampleNotes.join(' ');
+}
 // Piano Keys
 
 const pianoKeysHolder = document.createElement('div');
 pianoKeysHolder.className = 'piano__keys-holder';
 piano.append(pianoKeysHolder);
 
+const lightKeyWidth = `calc((100vw - 3vw - 1vw - ${0.3 * (lightKeysCount - 1)}vw) / ${lightKeysCount})`
+const lightKeyAssignedKeyFontSize = `calc((100vw - 3vw - 1vw - ${0.3 * (lightKeysCount - 1)}vw) / ${lightKeysCount} * .45)`;
+const darkKeyWidth = `calc((100vw - 3vw - 1vw - ${0.3 * (lightKeysCount - 1)}vw) / ${lightKeysCount} / 2)`;
+const darkKeyAssignedKeyFontSize = `calc((100vw - 3vw - 1vw - ${0.3 * (lightKeysCount - 1)}vw) / ${lightKeysCount} * .35)`;
 const lightKeys = [];
 const darkKeysGroupsCounts = [2, 3];
 const darkKeys = [];
@@ -71,6 +104,7 @@ let currentDarkKeyInsertedCount = 0;
 for (let i = 0; i < lightKeysCount; i += 1) {
   const lightKey = document.createElement('div');
   lightKey.className = 'piano__keys-holder__light-key';
+  lightKey.style.width = lightKeyWidth;
   lightKeys.push(lightKey);
   lightKeysHolder.append(lightKey);
 
@@ -81,9 +115,12 @@ for (let i = 0; i < lightKeysCount; i += 1) {
   const assignedKey = keyboard.assignedLightKeys[i];
   const lightKeyAssignedKeyLabel = document.createElement('label');
   lightKeyAssignedKeyLabel.className = 'piano__keys-holder__light-key__assigned-key-label';
-  lightKeyAssignedKeyLabel.textContent = assignedKey.getKeyLabel();
+  lightKeyAssignedKeyLabel.textContent = assignedKey ? assignedKey.getKeyLabel() : '';
+  lightKeyAssignedKeyLabel.style.fontSize = lightKeyAssignedKeyFontSize;
   lightKey.append(lightKeyAssignedKeyLabel);
-  assignedKey.assignNewElement(lightKey);
+  if (assignedKey) {
+    assignedKey.assignNewElement(lightKey);
+  }
 
   if (i > 0) {
     if (
@@ -91,6 +128,7 @@ for (let i = 0; i < lightKeysCount; i += 1) {
       darkKeysGroupsCounts[currentDarkKeysGroupIndex]
     ) {
       const darkKey = document.createElement('div');
+      darkKey.style.width = darkKeyWidth;
       darkKey.className = 'piano_keys-holder__dark-key-holder__dark-key';
 
       darkKey.dataset.index = i;
@@ -118,9 +156,12 @@ darkKeys.forEach((darkKey, i) => {
   const assignedKey = keyboard.assignedDarkKeys[i];
   const darkKeyAssignedKeyLabel = document.createElement('label');
   darkKeyAssignedKeyLabel.className = 'piano__keys-holder__dark-key__assigned-key-label';
-  darkKeyAssignedKeyLabel.textContent = assignedKey.getKeyLabel();
+  darkKeyAssignedKeyLabel.textContent = assignedKey ? assignedKey.getKeyLabel() : '';
+  darkKeyAssignedKeyLabel.style.fontSize = darkKeyAssignedKeyFontSize;
   darkKey.append(darkKeyAssignedKeyLabel);
-  assignedKey.assignNewElement(darkKey);
+  if (assignedKey) {
+    assignedKey.assignNewElement(darkKey);
+  }
 })
 
 window.addEventListener('resize', () => {
