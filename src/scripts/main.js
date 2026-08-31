@@ -62,12 +62,30 @@ pianoMelodyContainer.append(pianoMelodyLabel);
 const pianoMelodyInput = document.createElement('input');
 pianoMelodyInput.placeholder = `Example: ${getMelodyExample()}`;
 pianoMelodyInput.className = 'piano__control-panel__mode-panel-holder__melody-container__piano-melody-input';
+pianoMelodyInput.disabled = true;
 pianoMelodyContainer.append(pianoMelodyInput);
+
+const pianoMelodyEditButton = document.createElement('button');
+pianoMelodyEditButton.textContent = 'Edit';
+pianoMelodyEditButton.className = 'piano__control-panel__mode-panel-holder__melody-container__piano-melody-edit-button';
+pianoMelodyContainer.append(pianoMelodyEditButton);
+
+pianoMelodyEditButton.addEventListener('click', () => {
+  keyboard.mute();
+  pianoMelodyInput.disabled = false;
+});
 
 const pianoMelodyPlayButton = document.createElement('button');
 pianoMelodyPlayButton.textContent = 'Play';
 pianoMelodyPlayButton.className = 'piano__control-panel__mode-panel-holder__melody-container__piano-melody-play-button';
 pianoMelodyContainer.append(pianoMelodyPlayButton);
+
+pianoMelodyPlayButton.addEventListener('click', () => {
+  keyboard.unmute();
+  pianoMelodyInput.disabled = true;
+
+  // todo play melody
+});
 
 function getMelodyExample() {
   const exampleNotes = [];

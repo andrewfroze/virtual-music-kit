@@ -2,6 +2,10 @@ import { Key } from "./key";
 
 class Keyboard {
 
+  constructor() {
+    this.muted = false;
+  }
+
   assignedLightKeys = [
     new Key('KeyA'),
     new Key('KeyS'),
@@ -20,6 +24,14 @@ class Keyboard {
     new Key('KeyU'),
   ];
 
+  mute() {
+    this.muted = true;
+  }
+
+  unmute() {
+    this.muted = false;
+  }
+
   findAssignedKey(code) {
     for (const  assignedKey of [...this.assignedLightKeys, ...this.assignedDarkKeys]) {
       if (assignedKey.code === code) {
@@ -36,6 +48,10 @@ class Keyboard {
 const defaultKeyboard = new Keyboard();
 
 window.addEventListener('keydown', (event) => {
+  if (defaultKeyboard.muted) {
+    return;
+  }
+
   if (event.repeat) {
     return;
   }
@@ -56,6 +72,10 @@ window.addEventListener('keydown', (event) => {
 });
 
 window.addEventListener('keyup', (event) => {
+  if (defaultKeyboard.muted) {
+    return;
+  }
+
   const activeKey = defaultKeyboard.activeAssignedKey;
 
   if (!activeKey) {
