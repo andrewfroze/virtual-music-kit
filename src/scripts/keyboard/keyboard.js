@@ -1,4 +1,5 @@
 import { Key } from "./key";
+import { dispatchKeyDownEvent, dispatchKeyUpEvent } from '../piano-keys'
 
 class Keyboard {
 
@@ -66,8 +67,8 @@ window.addEventListener('keydown', (event) => {
     return;
   }
 
-  assignedKey.element.dispatchEvent(new MouseEvent('mousedown'));
-  assignedKey.element.classList.add('active');
+  dispatchKeyDownEvent(assignedKey.element);
+
   defaultKeyboard.activeAssignedKey = assignedKey;
 });
 
@@ -86,7 +87,7 @@ window.addEventListener('keyup', (event) => {
     return;
   }
 
-  activeKey.element.classList.remove('active');
+  dispatchKeyUpEvent(activeKey.element);
   defaultKeyboard.activeAssignedKey = undefined;
 });
 

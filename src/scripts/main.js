@@ -2,6 +2,7 @@ import '../styles/main.scss';
 import { Instrument } from './sound/instrument';
 import { PianoMod } from './piano-mod';
 import { keyboard } from './keyboard/keyboard';
+import { dispatchKeyDownEvent, dispatchKeyUpEvent } from './piano-keys';
 import { getRandomValueFromArray } from './random';
 import { Melody } from './sound/melody';
 
@@ -108,12 +109,27 @@ pianoMelodyPlayButton.textContent = 'Play';
 pianoMelodyPlayButton.className = 'piano__control-panel__mode-panel-holder__melody-container__piano-melody-play-button';
 pianoMelodyContainer.append(pianoMelodyPlayButton);
 
-pianoMelodyPlayButton.addEventListener('click', () => {
+pianoMelodyPlayButton.addEventListener('click', async () => {
   keyboard.unmute();
   pianoMelodyInput.disabled = true;
-
-  // todo play melody
+  pianoMelodyPlayButton.disabled = true;
+  await playMelody(melody);
+  pianoMelodyPlayButton.disabled = false;
 });
+
+const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+async function playMelody(melody) {
+  for (const note of melody.notes) {
+    dispatchKeyDownEvent(note.element);
+
+    await delay(200);
+
+    dispatchKeyUpEvent(note.element);
+
+    await delay(100);
+  }
+}
 
 // Piano Keys
 
