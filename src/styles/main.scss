@@ -76,8 +76,70 @@ body {
 
 }
 
-.piano__control-panel__mode-panel-holder__melody-container__piano-melody-input {
-  
+.piano__control-panel__mode-panel-holder__melody-container__piano-melody-editor {
+  display: flex;
+  gap: 5px;
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding: 3px 0;
+  height: fit-content;
+}
+
+.piano__control-panel__mode-panel-holder__melody-container__piano-melody-editor {
+  display: flex;
+  gap: 5px;
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding: 3px 0;
+  height: fit-content;
+}
+
+.piano__control-panel__mode-panel-holder__melody-container__piano-melody-editor__note {
+  position: relative;
+
+  border: 1px solid $piano-border-color;
+  padding: 2px 5px;
+
+  padding-right: .9em;
+}
+
+.piano__control-panel__mode-panel-holder__melody-container__piano-melody-editor__note__cross-icon {
+  position: absolute;
+
+  top: 10%;
+  right: 5%;
+
+  width: 20%;
+  aspect-ratio: 1;
+  color: gray;
+
+  cursor: pointer;
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+
+    top: 50%;
+    left: 50%;
+
+    width: 100%;
+    height: 1px;
+
+    background: currentColor;
+  }
+
+  &::before {
+    transform: translate(-50%, -50%) rotate(45deg);
+  }
+
+  &::after {
+    transform: translate(-50%, -50%) rotate(-45deg);
+  }
+}
+
+.piano__control-panel__mode-panel-holder__melody-container__piano-melody-editor__note__cross-icon:hover {
+  color: red;
 }
 
 .piano__control-panel__mode-panel-holder__melody-container__piano-melody-play-button{
@@ -121,6 +183,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: flex-end;
+  cursor: pointer;
 
   &:hover {
     background-color: $piano-light-key-hover-color;
@@ -152,6 +215,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: flex-end;
+  cursor: pointer;
 
   &:hover {
     background-color: $piano-dark-key-hover-color;
@@ -172,6 +236,7 @@ body {
   justify-content: center;
   align-items: center;
   box-sizing: border-box;
+  cursor: pointer;
 }
 
 .piano__keys-holder__light-key__assigned-key-label {

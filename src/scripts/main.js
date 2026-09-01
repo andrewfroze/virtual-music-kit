@@ -3,6 +3,7 @@ import { Instrument } from './sound/instrument';
 import { PianoMod } from './piano-mod';
 import { keyboard } from './keyboard/keyboard';
 import { getRandomValueFromArray } from './random';
+import { Melody } from './sound/melody';
 
 const exampleNotesCount = 5;
 const lightKeysCount = 20;
@@ -12,6 +13,15 @@ const pianoMods = [
   new PianoMod('Custom', 'custom'),
 ];
 const instrument = new Instrument();
+const melody = new Melody();
+setMelodyExample();
+
+function setMelodyExample() {
+  const availableNotes = keyboard.getAssignedSoundKeys();
+  for (let i = 0; i < exampleNotesCount; i += 1) {
+    melody.push(getRandomValueFromArray(availableNotes));
+  }
+}
 
 const piano = document.createElement('div');
 piano.className = 'piano';
@@ -59,11 +69,29 @@ pianoMelodyLabel.textContent = "Type your melody here:";
 pianoMelodyLabel.className = 'piano__control-panel__mode-panel-holder__melody-container__piano-melody-label';
 pianoMelodyContainer.append(pianoMelodyLabel);
 
-const pianoMelodyInput = document.createElement('input');
-pianoMelodyInput.placeholder = `Example: ${getMelodyExample()}`;
-pianoMelodyInput.className = 'piano__control-panel__mode-panel-holder__melody-container__piano-melody-input';
-pianoMelodyInput.disabled = true;
+const pianoMelodyInput = document.createElement('div');
+pianoMelodyInput.className = 'piano__control-panel__mode-panel-holder__melody-container__piano-melody-editor';
 pianoMelodyContainer.append(pianoMelodyInput);
+
+
+function generateNotesElement(note) {
+  const noteElement = document.createElement('div');
+  noteElement.className = 'piano__control-panel__mode-panel-holder__melody-container__piano-melody-editor__note';
+
+  const noteLabel = document.createElement('label');
+  noteLabel.textContent = note.getKeyLabel();
+  noteLabel.className = 'piano__control-panel__mode-panel-holder__melody-container__piano-melody-editor__note__label';
+  noteElement.append(noteLabel);
+
+  const crossIconContainer = document.createElement('div');
+  crossIconContainer.className = 'piano__control-panel__mode-panel-holder__melody-container__piano-melody-editor__note__cross-icon';
+  noteElement.append(crossIconContainer);
+  return noteElement;
+}
+
+melody.notes.forEach((melodyNote) => {
+  pianoMelodyInput.append(generateNotesElement(melodyNote));
+});
 
 const pianoMelodyEditButton = document.createElement('button');
 pianoMelodyEditButton.textContent = 'Edit';
@@ -87,14 +115,6 @@ pianoMelodyPlayButton.addEventListener('click', () => {
   // todo play melody
 });
 
-function getMelodyExample() {
-  const exampleNotes = [];
-  const availableNotes = keyboard.getAssignedSoundKeys();
-  for (let i = 0; i < exampleNotesCount; i += 1) {
-    exampleNotes.push(getRandomValueFromArray(availableNotes));
-  }
-  return exampleNotes.join(' ');
-}
 // Piano Keys
 
 const pianoKeysHolder = document.createElement('div');

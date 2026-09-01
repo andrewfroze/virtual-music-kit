@@ -41,7 +41,7 @@ class Keyboard {
   }
 
   getAssignedSoundKeys() {
-    return [...this.assignedLightKeys, ...this.assignedDarkKeys].map((key) => key.getKeyLabel());
+    return [...this.assignedLightKeys, ...this.assignedDarkKeys];
   }
 }
 
