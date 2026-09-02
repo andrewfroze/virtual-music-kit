@@ -1,6 +1,7 @@
 class Melody {
 
     constructor() {
+        this.editMode = false;
         this.notes = [];
     }
 

@@ -107,14 +107,9 @@ function generateNotesElement(note, index) {
  renderMelody();
 
 const pianoMelodyEditButton = document.createElement('button');
-pianoMelodyEditButton.textContent = 'Edit';
+pianoMelodyEditButton.textContent = melody.editMode ? 'Apply' : 'Edit';
 pianoMelodyEditButton.className = 'piano__control-panel__mode-panel-holder__melody-container__piano-melody-edit-button';
 pianoMelodyContainer.append(pianoMelodyEditButton);
-
-pianoMelodyEditButton.addEventListener('click', () => {
-  keyboard.mute();
-  pianoMelodyInput.disabled = false;
-});
 
 const pianoMelodyPlayButton = document.createElement('button');
 pianoMelodyPlayButton.textContent = 'Play';
@@ -122,12 +117,33 @@ pianoMelodyPlayButton.className = 'piano__control-panel__mode-panel-holder__melo
 pianoMelodyContainer.append(pianoMelodyPlayButton);
 
 pianoMelodyPlayButton.addEventListener('click', async () => {
-  keyboard.unmute();
-  pianoMelodyInput.disabled = true;
+  disableMelodyEditMode();
+  pianoMelodyEditButton.disabled = true;
   pianoMelodyPlayButton.disabled = true;
   await playMelody(melody);
+  pianoMelodyEditButton.disabled = false;
   pianoMelodyPlayButton.disabled = false;
 });
+
+pianoMelodyEditButton.addEventListener('click', () => {
+  if (melody.editMode) {
+    disableMelodyEditMode();
+  } else {
+    enableMelodyEditMode();
+  }
+});
+
+function enableMelodyEditMode() {
+  pianoMelodyEditButton.textContent = 'Apply';
+  pianoMelodyInput.classList.add('edit');
+  melody.editMode = true;
+}
+
+function disableMelodyEditMode() {
+  pianoMelodyInput.classList.remove('edit');
+  pianoMelodyEditButton.textContent = 'Edit';
+  melody.editMode = false;
+}
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -172,9 +188,7 @@ for (let i = 0; i < lightKeysCount; i += 1) {
   lightKeys.push(lightKey);
   lightKeysHolder.append(lightKey);
 
-  lightKey.addEventListener('mousedown', () => {
-    instrument.playNote(i);
-  });
+
 
   const assignedKey = keyboard.assignedLightKeys[i];
   const lightKeyAssignedKeyLabel = document.createElement('label');
@@ -184,6 +198,14 @@ for (let i = 0; i < lightKeysCount; i += 1) {
   if (assignedKey) {
     assignedKey.assignNewElement(lightKey);
   }
+
+  lightKey.addEventListener('click', () => {
+    instrument.playNote(i);
+    if (assignedKey && melody.editMode) {
+      melody.push(assignedKey);
+      renderMelody();
+    }
+  });
 
   if (i > 0) {
     if (
@@ -200,7 +222,7 @@ for (let i = 0; i < lightKeysCount; i += 1) {
       darkKeys.push(darkKey);
       darkKeysHolder.append(darkKey);
 
-      darkKey.addEventListener('mousedown', () => {
+      darkKey.addEventListener('click', () => {
         instrument.playSemitoneAfter(i - 1);
       });
 
@@ -224,7 +246,14 @@ darkKeys.forEach((darkKey, i) => {
   if (assignedKey) {
     assignedKey.assignNewElement(darkKey);
   }
-})
+
+  darkKey.addEventListener('click', () => {
+    if (melody.editMode && assignedKey) {
+      melody.push(assignedKey);
+      renderMelody();
+    }
+  });
+});
 
 window.addEventListener('resize', () => {
   darkKeys.forEach((darkKey) => {
@@ -241,3 +270,5 @@ function getDarkKeyLeft(index) {
 
   return gapCenter - pianoKeysHolder.getBoundingClientRect().left;
 }
+
+export { melody, renderMelody }

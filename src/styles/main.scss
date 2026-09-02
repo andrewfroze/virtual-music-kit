@@ -105,7 +105,12 @@ body {
   margin: 3px 0;
 
   background-color: $piano-border-color;
+  border: 1px solid $piano-border-color;
   border-radius: .3vw;
+
+  &.edit {
+    background-color: $piano-color;
+  } 
 }
 
 .piano__control-panel__mode-panel-holder__melody-container__piano-melody-editor__note {
@@ -114,12 +119,13 @@ body {
   background-color: $piano-color;
   border-radius: .2wv;
   padding: 2px 5px;
-
+  border: 1px solid $piano-border-color;
   padding-right: .9em;
 }
 
 .piano__control-panel__mode-panel-holder__melody-container__piano-melody-editor__note__cross-icon {
   position: absolute;
+  display: none;
 
   top: 10%;
   right: 5%;
@@ -151,6 +157,10 @@ body {
   &::after {
     transform: translate(-50%, -50%) rotate(-45deg);
   }
+}
+
+.edit .piano__control-panel__mode-panel-holder__melody-container__piano-melody-editor__note__cross-icon {
+  display: block;
 }
 
 .piano__control-panel__mode-panel-holder__melody-container__piano-melody-editor__note__cross-icon:hover {

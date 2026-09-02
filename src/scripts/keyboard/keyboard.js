@@ -1,5 +1,6 @@
 import { Key } from "./key";
-import { dispatchKeyDownEvent, dispatchKeyUpEvent } from '../piano-keys'
+import { dispatchKeyDownEvent, dispatchKeyUpEvent } from '../piano-keys';
+import { melody, renderMelody } from "../main";
 
 class Keyboard {
 
