@@ -7,7 +7,7 @@ import { getRandomValueFromArray } from './random';
 import { Melody } from './sound/melody';
 
 const exampleNotesCount = 5;
-const lightKeysCount = 20;
+const lightKeysCount = 15;
 const pianoMods = [
   new PianoMod('Piano', 'piano'),
   new PianoMod('Synth', 'synth'),
@@ -150,9 +150,7 @@ pianoKeysHolder.className = 'piano__keys-holder';
 piano.append(pianoKeysHolder);
 
 const lightKeyWidth = `calc((100vw - 3vw - 1vw - ${0.3 * (lightKeysCount - 1)}vw) / ${lightKeysCount})`
-const lightKeyAssignedKeyFontSize = `calc((100vw - 3vw - 1vw - ${0.3 * (lightKeysCount - 1)}vw) / ${lightKeysCount} * .45)`;
 const darkKeyWidth = `calc((100vw - 3vw - 1vw - ${0.3 * (lightKeysCount - 1)}vw) / ${lightKeysCount} / 2)`;
-const darkKeyAssignedKeyFontSize = `calc((100vw - 3vw - 1vw - ${0.3 * (lightKeysCount - 1)}vw) / ${lightKeysCount} * .35)`;
 const lightKeys = [];
 const darkKeysGroupsCounts = [2, 3];
 const darkKeys = [];
@@ -182,7 +180,6 @@ for (let i = 0; i < lightKeysCount; i += 1) {
   const lightKeyAssignedKeyLabel = document.createElement('label');
   lightKeyAssignedKeyLabel.className = 'piano__keys-holder__light-key__assigned-key-label';
   lightKeyAssignedKeyLabel.textContent = assignedKey ? assignedKey.getKeyLabel() : '';
-  lightKeyAssignedKeyLabel.style.fontSize = lightKeyAssignedKeyFontSize;
   lightKey.append(lightKeyAssignedKeyLabel);
   if (assignedKey) {
     assignedKey.assignNewElement(lightKey);
@@ -223,7 +220,6 @@ darkKeys.forEach((darkKey, i) => {
   const darkKeyAssignedKeyLabel = document.createElement('label');
   darkKeyAssignedKeyLabel.className = 'piano__keys-holder__dark-key__assigned-key-label';
   darkKeyAssignedKeyLabel.textContent = assignedKey ? assignedKey.getKeyLabel() : '';
-  darkKeyAssignedKeyLabel.style.fontSize = darkKeyAssignedKeyFontSize;
   darkKey.append(darkKeyAssignedKeyLabel);
   if (assignedKey) {
     assignedKey.assignNewElement(darkKey);
