@@ -74,8 +74,17 @@ const pianoMelodyInput = document.createElement('div');
 pianoMelodyInput.className = 'piano__control-panel__mode-panel-holder__melody-container__piano-melody-editor';
 pianoMelodyContainer.append(pianoMelodyInput);
 
+function renderMelody() {
+  pianoMelodyInput.replaceChildren();
 
-function generateNotesElement(note) {
+  melody.notes.forEach((note, index) => {
+    pianoMelodyInput.append(
+      generateNotesElement(note, index)
+    );
+  });
+}
+
+function generateNotesElement(note, index) {
   const noteElement = document.createElement('div');
   noteElement.className = 'piano__control-panel__mode-panel-holder__melody-container__piano-melody-editor__note';
 
@@ -87,12 +96,15 @@ function generateNotesElement(note) {
   const crossIconContainer = document.createElement('div');
   crossIconContainer.className = 'piano__control-panel__mode-panel-holder__melody-container__piano-melody-editor__note__cross-icon';
   noteElement.append(crossIconContainer);
+
+  crossIconContainer.addEventListener('click', () => {
+    melody.notes.splice(index, 1);
+    renderMelody();
+  })
   return noteElement;
 }
 
-melody.notes.forEach((melodyNote) => {
-  pianoMelodyInput.append(generateNotesElement(melodyNote));
-});
+ renderMelody();
 
 const pianoMelodyEditButton = document.createElement('button');
 pianoMelodyEditButton.textContent = 'Edit';
