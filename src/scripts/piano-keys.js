@@ -1,5 +1,5 @@
 function dispatchKeyDownEvent(keyElement) {
-  keyElement.dispatchEvent(new MouseEvent('click'));
+  keyElement.dispatchEvent(new MouseEvent('mousedown'));
   keyElement.classList.add('active');
 }
 

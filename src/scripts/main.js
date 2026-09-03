@@ -86,6 +86,8 @@ function renderMelody() {
 
 function generateNotesElement(note, index) {
   const noteElement = document.createElement('div');
+  noteElement.draggable = true;
+  noteElement.dataset.index = index;
   noteElement.className = 'piano__control-panel__mode-panel-holder__melody-container__piano-melody-editor__note';
 
   const noteLabel = document.createElement('label');
@@ -104,7 +106,7 @@ function generateNotesElement(note, index) {
   return noteElement;
 }
 
- renderMelody();
+renderMelody();
 
 const pianoMelodyEditButton = document.createElement('button');
 pianoMelodyEditButton.textContent = melody.editMode ? 'Apply' : 'Edit';
@@ -179,6 +181,31 @@ const darkKeysHolder = document.createElement('div');
 darkKeysHolder.className = 'piano__keys-holder__dark-key-holder';
 pianoKeysHolder.append(darkKeysHolder);
 
+let reassignIconSvgDocument;
+
+async function loadReassignKeyIcon() {
+  const response = await fetch('/src/images/reassign-icon.svg');
+  const svgText = await response.text();
+  const parser = new DOMParser();
+  reassignIconSvgDocument = parser.parseFromString(svgText, 'image/svg+xml');
+}
+
+await loadReassignKeyIcon();
+
+function addReassignIcon(keyElement) {
+  const reassignKeyIcon = reassignIconSvgDocument.documentElement.cloneNode(true);
+  reassignKeyIcon.classList.add('piano__keys-holder__light-key__reassign-key-icon');
+  keyElement.append(reassignKeyIcon);
+}
+
+function highlightKeyWhileAction(keyElement, action) {
+  keyElement.classList.add('active');
+  action();
+  setTimeout(() => {
+    keyElement.classList.remove('active');
+  }, 150);
+}
+
 let currentDarkKeysGroupIndex = 0;
 let currentDarkKeyInsertedCount = 0;
 for (let i = 0; i < lightKeysCount; i += 1) {
@@ -187,8 +214,6 @@ for (let i = 0; i < lightKeysCount; i += 1) {
   lightKey.style.width = lightKeyWidth;
   lightKeys.push(lightKey);
   lightKeysHolder.append(lightKey);
-
-
 
   const assignedKey = keyboard.assignedLightKeys[i];
   const lightKeyAssignedKeyLabel = document.createElement('label');
@@ -199,8 +224,13 @@ for (let i = 0; i < lightKeysCount; i += 1) {
     assignedKey.assignNewElement(lightKey);
   }
 
-  lightKey.addEventListener('click', () => {
-    instrument.playNote(i);
+  addReassignIcon(lightKey);
+
+  lightKey.addEventListener('mousedown', (event) => {
+    if (event.target.closest('.piano__keys-holder__light-key__reassign-key-icon')) {
+      return;
+    }
+    highlightKeyWhileAction(lightKey, () => instrument.playNote(i));
     if (assignedKey && melody.editMode) {
       melody.push(assignedKey);
       renderMelody();
@@ -222,8 +252,11 @@ for (let i = 0; i < lightKeysCount; i += 1) {
       darkKeys.push(darkKey);
       darkKeysHolder.append(darkKey);
 
-      darkKey.addEventListener('click', () => {
-        instrument.playSemitoneAfter(i - 1);
+      darkKey.addEventListener('mousedown', () => {
+        if (event.target.closest('.piano__keys-holder__light-key__reassign-key-icon')) {
+          return;
+        }
+        highlightKeyWhileAction(darkKey, () => instrument.playSemitoneAfter(i - 1));
       });
 
       currentDarkKeyInsertedCount += 1;
@@ -243,11 +276,15 @@ darkKeys.forEach((darkKey, i) => {
   darkKeyAssignedKeyLabel.className = 'piano__keys-holder__dark-key__assigned-key-label';
   darkKeyAssignedKeyLabel.textContent = assignedKey ? assignedKey.getKeyLabel() : '';
   darkKey.append(darkKeyAssignedKeyLabel);
+  addReassignIcon(darkKey);
   if (assignedKey) {
     assignedKey.assignNewElement(darkKey);
   }
 
-  darkKey.addEventListener('click', () => {
+  darkKey.addEventListener('mousedown', (event) => {
+    if (event.target.closest('.piano__keys-holder__light-key__reassign-key-icon')) {
+      return;
+    }
     if (melody.editMode && assignedKey) {
       melody.push(assignedKey);
       renderMelody();

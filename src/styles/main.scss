@@ -206,16 +206,16 @@ body {
   border-bottom-left-radius: 1.5vw;
   border-bottom-right-radius: 1.5vw;
   display: flex;
-  justify-content: center;
-  align-items: flex-end;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
   cursor: pointer;
 
   &:hover {
     background-color: $piano-light-key-hover-color;
   }
 
-  &.active,
-  &:active {
+  &.active {
     background-color: $piano-light-key-active-color;
   }
 }
@@ -237,16 +237,17 @@ body {
   border-bottom-right-radius: 1vw;
   transform: translateX(-50%);
   display: flex;
-  justify-content: center;
-  align-items: flex-end;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
   cursor: pointer;
+  color: $piano-dark-key-assigned-key-text-color;
 
   &:hover {
     background-color: $piano-dark-key-hover-color;
   }
 
-  &.active,
-  &:active {
+  &.active {
     background-color: $piano-dark-key-active-color;
   }
 }
@@ -255,7 +256,6 @@ body {
 .piano__keys-holder__light-key__assigned-key-label {
   aspect-ratio: 1 / 1;
   padding: 4px;
-  margin-bottom: 1vh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -270,10 +270,18 @@ body {
 
 .piano__keys-holder__dark-key__assigned-key-label {
   font-size: clamp(8px, 2vw, 25px);
-  color: $piano-dark-key-assigned-key-text-color;
 }
 
 .piano__control-panel__mode-panel-holder__melody-container {
   display: flex;
   flex-direction: column;
+}
+
+.piano__keys-holder__light-key__reassign-key-icon,
+.piano__keys-holder__light-key__reassign-key-icon {
+  width: 30%;
+
+  &:hover {
+    color: red;
+  }
 }
