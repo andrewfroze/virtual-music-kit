@@ -34,16 +34,55 @@ class Keyboard {
     this.muted = false;
   }
 
-  findAssignedKey(code) {
-    for (const  assignedKey of [...this.assignedLightKeys, ...this.assignedDarkKeys]) {
-      if (assignedKey.code === code) {
-        return assignedKey;
-      }
+ findAssignedKey(code) {
+    return this.getAssignedSoundKeys()
+      .find((key) => key.code === code);
+  }
+
+  findKeyByElement(element) {
+    return this.getAssignedSoundKeys()
+      .find((key) => key.element === element);
+  }
+
+  unassignKey(code) {
+    const key = this.findAssignedKey(code);
+
+    if (!key) {
+      return;
     }
+
+    key.code = undefined;
+    key.element.textContent = '';
+  }
+
+  assignKey(element, code) {
+    this.unassignKey(code);
+    let key = this.findKeyByElement(element);
+
+    if (!key) {
+      key = new Key(code, element);
+
+      if (element.classList.contains('piano__keys-holder__light-key')) {
+        this.assignedLightKeys.push(key);
+      } else {
+        this.assignedDarkKeys.push(key);
+      }
+    } else {
+      key.code = code;
+    }
+  }
+
+
+  isAssigned(code) {
+    return Boolean(this.findAssignedKey(code));
   }
 
   getAssignedSoundKeys() {
     return [...this.assignedLightKeys, ...this.assignedDarkKeys];
+  }
+
+  getAssignedCodes() {
+    return getAssignedSoundKeys().map((key) => key.code);
   }
 }
 

@@ -5,6 +5,7 @@ import { keyboard } from './keyboard/keyboard';
 import { dispatchKeyDownEvent, dispatchKeyUpEvent } from './piano-keys';
 import { getRandomValueFromArray } from './random';
 import { Melody } from './sound/melody';
+import { parseKeyLabel } from './keyboard/key';
 
 const exampleNotesCount = 5;
 const lightKeysCount = 15;
@@ -196,6 +197,8 @@ function addReassignIcon(keyElement) {
   const reassignKeyIcon = reassignIconSvgDocument.documentElement.cloneNode(true);
   reassignKeyIcon.classList.add('piano__keys-holder__light-key__reassign-key-icon');
   keyElement.append(reassignKeyIcon);
+
+  return reassignKeyIcon;
 }
 
 function highlightKeyWhileAction(keyElement, action) {
@@ -224,10 +227,11 @@ for (let i = 0; i < lightKeysCount; i += 1) {
     assignedKey.assignNewElement(lightKey);
   }
 
-  addReassignIcon(lightKey);
+  const reassignIcon = addReassignIcon(lightKey);
 
   lightKey.addEventListener('mousedown', (event) => {
-    if (event.target.closest('.piano__keys-holder__light-key__reassign-key-icon')) {
+    if (reassignIcon.contains(event.target)) {
+      openAssignKeyModal(lightKey, lightKeyAssignedKeyLabel);
       return;
     }
     highlightKeyWhileAction(lightKey, () => instrument.playNote(i));
@@ -252,13 +256,6 @@ for (let i = 0; i < lightKeysCount; i += 1) {
       darkKeys.push(darkKey);
       darkKeysHolder.append(darkKey);
 
-      darkKey.addEventListener('mousedown', () => {
-        if (event.target.closest('.piano__keys-holder__light-key__reassign-key-icon')) {
-          return;
-        }
-        highlightKeyWhileAction(darkKey, () => instrument.playSemitoneAfter(i - 1));
-      });
-
       currentDarkKeyInsertedCount += 1;
     } else {
       currentDarkKeyInsertedCount = 0;
@@ -270,25 +267,157 @@ for (let i = 0; i < lightKeysCount; i += 1) {
   }
 }
 
+async function openAssignKeyModal(keyElement, keyLabelElement) {
+  keyboard.mute();
+  keyElement.classList.add('edit');
+
+  const overlay = document.createElement('div');
+  overlay.className = 'overlay';
+  document.body.append(overlay);
+
+  const assignButtonModal = document.createElement('div');
+  assignButtonModal.className = 'overlay__assign-button-modal';
+  overlay.append(assignButtonModal);
+
+  piano.classList.add('blured');
+
+  const modalLabel = document.createElement('label');
+  modalLabel.textContent = 'Press new key to assign';
+  assignButtonModal.append(modalLabel);
+
+  const cancelButton = document.createElement('button');
+  cancelButton.textContent = 'Cancel (ESC)';
+  assignButtonModal.append(cancelButton);
+
+  let closeBlocked = false;
+
+  overlay.addEventListener('click', (event) => {
+    if (!closeBlocked && !assignButtonModal.contains(event.target)) {
+      closeEditMode();
+      return;
+    }
+  });
+
+  cancelButton.addEventListener('click', () => {
+    closeEditMode();
+  });
+
+  function closeEditMode() {
+    overlay.remove();
+    piano.classList.remove('blured');
+    keyboard.unmute();
+    keyElement.classList.remove('edit');
+  }
+
+  let newKey;
+
+  while (true) {
+
+    newKey = await waitForKey();
+
+    if (newKey === 'Escape') {
+      assignButtonModal.classList.add('hidden');
+
+      const confirmed = await showConfirmMessage('cancel');
+
+      if (confirmed) {
+        closeEditMode();
+        return;
+      }
+    }
+
+
+    if (!newKey.startsWith('Key') && !newKey.startsWith('Digit')) {
+      continue;
+    }
+
+    const isTaken = keyboard.isAssigned(newKey);
+
+    if (isTaken) {
+      assignButtonModal.classList.add('hidden');
+
+      const takenMessage = `Key '${parseKeyLabel(newKey)}' is already taken.`;
+
+      const replaceConformed = await showConfirmMessage(
+        'replacement',
+        takenMessage
+      );
+
+      assignButtonModal.classList.remove('hidden');
+
+      if (replaceConformed) {
+        break;
+      }
+    } else {
+      assignButtonModal.classList.add('hidden');
+
+      const assignConformed = await showConfirmMessage('assignment');
+
+      assignButtonModal.classList.remove('hidden');
+
+      if (assignConformed) {
+        break;
+      }
+    }
+  }
+  keyboard.assignKey(keyElement, newKey);
+  keyLabelElement.textContent = parseKeyLabel(newKey);
+  closeEditMode();
+  
+  async function showConfirmMessage(goal, additionalMessage = undefined) {
+    closeBlocked = true;
+    const confirmMessage = document.createElement('label');
+    const confirmMessageText = `Press 'Enter' to confirm ${goal}`;
+    confirmMessage.textContent = additionalMessage ?  additionalMessage.concat(`\n${confirmMessageText}`) : confirmMessageText;
+    confirmMessage.className = 'overlay__assign-button-modal';
+    overlay.append(confirmMessage);
+
+    let key;
+    do {
+      key = await waitForKey();
+    } while (key !== 'Enter' && key !== 'Escape');
+
+    closeBlocked = false;
+    confirmMessage.remove();
+    return key === 'Enter';
+  }
+}
+
+function waitForKey() {
+  return new Promise((resolve) => {
+    const handleKeyDown = (event) => {
+      event.preventDefault();
+
+      window.removeEventListener('keydown', handleKeyDown);
+
+      resolve(event.code);
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+  });
+}
+
 darkKeys.forEach((darkKey, i) => {
   const assignedKey = keyboard.assignedDarkKeys[i];
   const darkKeyAssignedKeyLabel = document.createElement('label');
   darkKeyAssignedKeyLabel.className = 'piano__keys-holder__dark-key__assigned-key-label';
   darkKeyAssignedKeyLabel.textContent = assignedKey ? assignedKey.getKeyLabel() : '';
   darkKey.append(darkKeyAssignedKeyLabel);
-  addReassignIcon(darkKey);
+  const reassignIcon = addReassignIcon(darkKey);
   if (assignedKey) {
     assignedKey.assignNewElement(darkKey);
   }
 
   darkKey.addEventListener('mousedown', (event) => {
-    if (event.target.closest('.piano__keys-holder__light-key__reassign-key-icon')) {
+    if (reassignIcon.contains(event.target)) {
+      openAssignKeyModal(darkKey, darkKeyAssignedKeyLabel);
       return;
     }
     if (melody.editMode && assignedKey) {
       melody.push(assignedKey);
       renderMelody();
     }
+    highlightKeyWhileAction(darkKey, () => instrument.playSemitoneAfter(i + 1));
   });
 });
 

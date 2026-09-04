@@ -14,8 +14,12 @@ class Key {
   }
 
   getKeyLabel() {
-    return this.code.replace('Key', '').replace('Digit', '');
+    return parseKeyLabel(this.code);
   }
 }
 
-export { Key }
+function parseKeyLabel(code) {
+  return code.replace('Key', '').replace('Digit', '');
+}
+
+export { Key, parseKeyLabel }
