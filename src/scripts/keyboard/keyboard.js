@@ -1,6 +1,5 @@
 import { Key } from "./key";
 import { dispatchKeyDownEvent, dispatchKeyUpEvent } from '../piano-keys';
-import { melody, renderMelody } from "../main";
 
 class Keyboard {
 
@@ -87,7 +86,7 @@ class Keyboard {
   }
 
   getAssignedCodes() {
-    return getAssignedSoundKeys().map((key) => key.code);
+    return this.getAssignedSoundKeys().map((key) => key.code);
   }
 }
 
