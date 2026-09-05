@@ -9,13 +9,14 @@ import { parseKeyLabel } from './keyboard/key';
 
 const exampleNotesCount = 5;
 const lightKeysCount = 15;
+const maxMelodySize = 50;
 const pianoMods = [
   new PianoMod('Piano', 'piano'),
   new PianoMod('Synth', 'synth'),
   new PianoMod('Custom', 'custom'),
 ];
 const instrument = new Instrument();
-const melody = new Melody();
+const melody = new Melody(maxMelodySize);
 setMelodyExample();
 
 function setMelodyExample() {
@@ -229,8 +230,9 @@ for (let i = 0; i < lightKeysCount; i += 1) {
     lightKey.classList.add('active');
     instrument.playNote(i)
     if (assignedKey && melody.editMode) {
-      melody.push(assignedKey);
-      renderMelody();
+      if (melody.push(assignedKey)) {
+        renderMelody();
+      };
     }
   });
 
@@ -413,8 +415,9 @@ darkKeys.forEach((darkKey, i) => {
       return;
     }
     if (melody.editMode && assignedKey) {
-      melody.push(assignedKey);
-      renderMelody();
+      if(melody.push(assignedKey)) {
+        renderMelody();
+      }
     }
     darkKey.classList.add('active');
     instrument.playSemitoneAfter(i + 1)
