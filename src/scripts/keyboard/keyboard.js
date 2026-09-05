@@ -65,7 +65,7 @@ class Keyboard {
     }
 
     key.code = undefined;
-    key.element.textContent = '';
+    key.element.querySelector('label').textContent = '';
   }
 
   assignKey(element, code) {

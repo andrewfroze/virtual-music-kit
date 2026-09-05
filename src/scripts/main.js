@@ -201,14 +201,6 @@ function addReassignIcon(keyElement) {
   return reassignKeyIcon;
 }
 
-function highlightKeyWhileAction(keyElement, action) {
-  keyElement.classList.add('active');
-  action();
-  setTimeout(() => {
-    keyElement.classList.remove('active');
-  }, 150);
-}
-
 let currentDarkKeysGroupIndex = 0;
 let currentDarkKeyInsertedCount = 0;
 for (let i = 0; i < lightKeysCount; i += 1) {
@@ -234,11 +226,16 @@ for (let i = 0; i < lightKeysCount; i += 1) {
       openAssignKeyModal(lightKey, lightKeyAssignedKeyLabel);
       return;
     }
-    highlightKeyWhileAction(lightKey, () => instrument.playNote(i));
+    lightKey.classList.add('active');
+    instrument.playNote(i)
     if (assignedKey && melody.editMode) {
       melody.push(assignedKey);
       renderMelody();
     }
+  });
+
+  lightKey.addEventListener('mouseup', () => {
+    lightKey.classList.remove('active');
   });
 
   if (i > 0) {
@@ -419,7 +416,12 @@ darkKeys.forEach((darkKey, i) => {
       melody.push(assignedKey);
       renderMelody();
     }
-    highlightKeyWhileAction(darkKey, () => instrument.playSemitoneAfter(i + 1));
+    darkKey.classList.add('active');
+    instrument.playSemitoneAfter(i + 1)
+  });
+
+  darkKey.addEventListener('mouseup', () => {
+    darkKey.classList.remove('active');
   });
 });
 
