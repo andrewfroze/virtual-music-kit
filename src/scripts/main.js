@@ -8,8 +8,8 @@ import { Melody } from './sound/melody';
 import { parseKeyLabel } from './keyboard/key';
 
 const exampleNotesCount = 5;
-const lightKeysCount = 15;
-const maxMelodySize = 50;
+const lightKeysCount = 10;
+const maxMelodySize = 34;
 const pianoMods = [
   new PianoMod('Piano', 'piano'),
   new PianoMod('Synth', 'synth'),

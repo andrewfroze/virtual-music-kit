@@ -19,11 +19,6 @@ class Keyboard {
     new Key('KeyV'),
     new Key('KeyG'),
     new Key('KeyB'),
-    new Key('KeyH'),
-    new Key('KeyN'),
-    new Key('KeyJ'),
-    new Key('KeyK'),
-    new Key('KeyL'),
   ];
 
   assignedDarkKeys = [
@@ -34,9 +29,6 @@ class Keyboard {
     new Key('KeyT'),
     new Key('KeyY'),
     new Key('KeyU'),
-    new Key('KeyI'),
-    new Key('KeyO'),
-    new Key('KeyP'),
   ];
 
   mute() {
