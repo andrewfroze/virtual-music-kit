@@ -323,6 +323,8 @@ async function openAssignKeyModal(keyElement, keyLabelElement) {
       if (confirmed) {
         closeEditMode();
         return;
+      } else {
+        assignButtonModal.classList.remove('hidden');
       }
     }
 
