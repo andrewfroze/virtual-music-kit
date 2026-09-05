@@ -10,20 +10,33 @@ class Keyboard {
 
   assignedLightKeys = [
     new Key('KeyA'),
+    new Key('KeyZ'),
     new Key('KeyS'),
+    new Key('KeyX'),
     new Key('KeyD'),
+    new Key('KeyC'),
     new Key('KeyF'),
+    new Key('KeyV'),
     new Key('KeyG'),
+    new Key('KeyB'),
     new Key('KeyH'),
+    new Key('KeyN'),
     new Key('KeyJ'),
+    new Key('KeyK'),
+    new Key('KeyL'),
   ];
 
   assignedDarkKeys = [
+    new Key('KeyQ'),
     new Key('KeyW'),
     new Key('KeyE'),
+    new Key('KeyR'),
     new Key('KeyT'),
     new Key('KeyY'),
     new Key('KeyU'),
+    new Key('KeyI'),
+    new Key('KeyO'),
+    new Key('KeyP'),
   ];
 
   mute() {
