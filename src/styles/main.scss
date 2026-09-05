@@ -93,11 +93,10 @@ body {
 
 .piano__control-panel__mode-panel-holder__melody-container__piano-melody-editor {
   display: flex;
-  flex: 1;
+  flex: 1 1 20px;
 
   flex-wrap: wrap;
 
-  min-width: 0;
   height: fit-content;
 
   gap: 5px;
