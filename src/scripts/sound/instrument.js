@@ -8,7 +8,7 @@ class Instrument {
 
   constructor() {
     this.baseFrequency = 261.63;
-    this.audioContext = new window.AudioContext;
+    this.audioContext = new AudioContext();
     this.piano = new Piano(this.audioContext);
     this.synth = new Synth(this.audioContext);
     this.custom = new Custom(this.audioContext);
