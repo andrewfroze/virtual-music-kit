@@ -122,9 +122,13 @@ pianoMelodyContainer.append(pianoMelodyPlayButton);
 
 pianoMelodyPlayButton.addEventListener('click', async () => {
   disableMelodyEditMode();
+  const pianoCover = document.createElement('div');
+  pianoCover.className = 'piano__cover';
+  piano.append(pianoCover);
   pianoMelodyEditButton.disabled = true;
   pianoMelodyPlayButton.disabled = true;
   await playMelody(melody);
+  pianoCover.remove();
   pianoMelodyEditButton.disabled = false;
   pianoMelodyPlayButton.disabled = false;
 });

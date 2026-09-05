@@ -32,6 +32,7 @@ body {
 
 .piano {
   display: flex;
+  position: relative;
   flex-direction: column;
   gap: .5vh;
   box-sizing: border-box;
@@ -42,6 +43,14 @@ body {
   border: 2px solid $piano-border-color;
   border-radius: 2vw;
   background-color: $piano-color;
+}
+
+.piano__cover {
+  z-index: 999;
+  background-color: #424242b0;
+  position: absolute;
+  inset: 0;
+  border-radius: 2vw;
 }
 
 .piano__control-panel {
@@ -85,10 +94,6 @@ body {
 
   margin: 0;
   padding: 1vw 1vh;
-}
-
-.piano__control-panel__mode-panel-holder__melody-container__piano-melody-label {
-
 }
 
 .piano__control-panel__mode-panel-holder__melody-container__piano-melody-editor {
@@ -164,10 +169,6 @@ body {
 
 .piano__control-panel__mode-panel-holder__melody-container__piano-melody-editor__note__cross-icon:hover {
   color: red;
-}
-
-.piano__control-panel__mode-panel-holder__melody-container__piano-melody-play-button{
-
 }
 
 .piano__keys-holder {
