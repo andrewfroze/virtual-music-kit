@@ -1,5 +1,4 @@
 class Key {
-
   constructor(code, element = undefined) {
     this.code = code;
     this.element = element;
@@ -19,7 +18,7 @@ class Key {
 }
 
 function parseKeyLabel(code) {
-  return code.replace('Key', '').replace('Digit', '');
+  return code.replace("Key", "").replace("Digit", "");
 }
 
-export { Key, parseKeyLabel }
+export { Key, parseKeyLabel };

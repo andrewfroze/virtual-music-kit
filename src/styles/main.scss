@@ -34,7 +34,7 @@ body {
   display: flex;
   position: relative;
   flex-direction: column;
-  gap: .5vh;
+  gap: 0.5vh;
   box-sizing: border-box;
 
   width: fit-content;
@@ -110,21 +110,21 @@ body {
 
   background-color: $piano-border-color;
   border: 1px solid $piano-border-color;
-  border-radius: .3vw;
+  border-radius: 0.3vw;
 
   &.edit {
     background-color: $piano-color;
-  } 
+  }
 }
 
 .piano__control-panel__mode-panel-holder__melody-container__piano-melody-editor__note {
   position: relative;
 
   background-color: $piano-color;
-  border-radius: .2wv;
+  border-radius: 0.2wv;
   padding: 2px 5px;
   border: 1px solid $piano-border-color;
-  padding-right: .9em;
+  padding-right: 0.9em;
 }
 
 .piano__control-panel__mode-panel-holder__melody-container__piano-melody-editor__note__cross-icon {
@@ -142,7 +142,7 @@ body {
 
   &::before,
   &::after {
-    content: '';
+    content: "";
     position: absolute;
 
     top: 50%;
@@ -163,7 +163,8 @@ body {
   }
 }
 
-.edit .piano__control-panel__mode-panel-holder__melody-container__piano-melody-editor__note__cross-icon {
+.edit
+  .piano__control-panel__mode-panel-holder__melody-container__piano-melody-editor__note__cross-icon {
   display: block;
 }
 
@@ -173,7 +174,6 @@ body {
   }
 }
 
-
 .piano__keys-holder {
   position: relative;
   width: fit-content;
@@ -182,7 +182,7 @@ body {
   background-color: $piano-keys-holder-color;
   border-radius: 1.5vw;
   margin: 1vw;
-  padding: .5vw;
+  padding: 0.5vw;
 }
 
 .piano__keys-holder__light-key-holder {
@@ -218,7 +218,7 @@ body {
     &:hover {
       background-color: $piano-light-key-hover-color;
     }
-  } 
+  }
 
   &.active {
     background-color: $piano-light-key-active-color;
@@ -256,7 +256,7 @@ body {
     &:hover {
       background-color: $piano-dark-key-hover-color;
     }
-  } 
+  }
 
   &.active {
     background-color: $piano-dark-key-active-color;

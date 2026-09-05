@@ -1,33 +1,32 @@
 import { Key } from "./key";
-import { dispatchKeyDownEvent, dispatchKeyUpEvent } from '../piano-keys';
+import { dispatchKeyDownEvent, dispatchKeyUpEvent } from "../piano-keys";
 
 class Keyboard {
-
   constructor() {
     this.muted = false;
   }
 
   assignedLightKeys = [
-    new Key('KeyA'),
-    new Key('KeyZ'),
-    new Key('KeyS'),
-    new Key('KeyX'),
-    new Key('KeyD'),
-    new Key('KeyC'),
-    new Key('KeyF'),
-    new Key('KeyV'),
-    new Key('KeyG'),
-    new Key('KeyB'),
+    new Key("KeyA"),
+    new Key("KeyZ"),
+    new Key("KeyS"),
+    new Key("KeyX"),
+    new Key("KeyD"),
+    new Key("KeyC"),
+    new Key("KeyF"),
+    new Key("KeyV"),
+    new Key("KeyG"),
+    new Key("KeyB"),
   ];
 
   assignedDarkKeys = [
-    new Key('KeyQ'),
-    new Key('KeyW'),
-    new Key('KeyE'),
-    new Key('KeyR'),
-    new Key('KeyT'),
-    new Key('KeyY'),
-    new Key('KeyU'),
+    new Key("KeyQ"),
+    new Key("KeyW"),
+    new Key("KeyE"),
+    new Key("KeyR"),
+    new Key("KeyT"),
+    new Key("KeyY"),
+    new Key("KeyU"),
   ];
 
   mute() {
@@ -38,14 +37,12 @@ class Keyboard {
     this.muted = false;
   }
 
- findAssignedKey(code) {
-    return this.getAssignedSoundKeys()
-      .find((key) => key.code === code);
+  findAssignedKey(code) {
+    return this.getAssignedSoundKeys().find((key) => key.code === code);
   }
 
   findKeyByElement(element) {
-    return this.getAssignedSoundKeys()
-      .find((key) => key.element === element);
+    return this.getAssignedSoundKeys().find((key) => key.element === element);
   }
 
   unassignKey(code) {
@@ -56,7 +53,7 @@ class Keyboard {
     }
 
     key.code = undefined;
-    key.element.querySelector('label').textContent = '';
+    key.element.querySelector("label").textContent = "";
   }
 
   assignKey(element, code) {
@@ -66,7 +63,7 @@ class Keyboard {
     if (!key) {
       key = new Key(code, element);
 
-      if (element.classList.contains('piano__keys-holder__light-key')) {
+      if (element.classList.contains("piano__keys-holder__light-key")) {
         this.assignedLightKeys.push(key);
       } else {
         this.assignedDarkKeys.push(key);
@@ -75,7 +72,6 @@ class Keyboard {
       key.code = code;
     }
   }
-
 
   isAssigned(code) {
     return Boolean(this.findAssignedKey(code));
@@ -92,7 +88,7 @@ class Keyboard {
 
 const defaultKeyboard = new Keyboard();
 
-window.addEventListener('keydown', (event) => {
+window.addEventListener("keydown", (event) => {
   if (defaultKeyboard.muted) {
     return;
   }
@@ -116,7 +112,7 @@ window.addEventListener('keydown', (event) => {
   defaultKeyboard.activeAssignedKey = assignedKey;
 });
 
-window.addEventListener('keyup', (event) => {
+window.addEventListener("keyup", (event) => {
   if (defaultKeyboard.muted) {
     return;
   }
@@ -135,4 +131,4 @@ window.addEventListener('keyup', (event) => {
   defaultKeyboard.activeAssignedKey = undefined;
 });
 
-export { defaultKeyboard as keyboard }
+export { defaultKeyboard as keyboard };

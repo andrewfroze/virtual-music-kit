@@ -1,11 +1,10 @@
-import { Piano } from './piano';
-import { Synth } from './synth';
-import { Custom } from './custom';
+import { Piano } from "./piano";
+import { Synth } from "./synth";
+import { Custom } from "./custom";
 
 const whiteKeySemitones = [0, 2, 4, 5, 7, 9, 11];
 
 class Instrument {
-
   constructor() {
     this.baseFrequency = 261.63;
     this.audioContext = new AudioContext();
@@ -17,10 +16,10 @@ class Instrument {
 
   changeTo(instrument) {
     switch (instrument) {
-      case 'custom':
+      case "custom":
         this.active = this.custom;
         break;
-      case 'synth':
+      case "synth":
         this.active = this.synth;
         break;
       default:
@@ -30,8 +29,8 @@ class Instrument {
 
   getNoteFrequency(index) {
     if (index < 0) {
-        console.log(`Invalid note index. Index: ${index}`);
-        return;
+      console.log(`Invalid note index. Index: ${index}`);
+      return;
     }
     const octave = Math.floor(index / 7);
     const noteIndex = index % 7;
@@ -49,10 +48,7 @@ class Instrument {
   playSemitoneAfter(previous) {
     const previousFrequency = this.getNoteFrequency(previous);
 
-    this.active.playNote(
-      previousFrequency * 2 ** (1 / 12)
-    );
+    this.active.playNote(previousFrequency * 2 ** (1 / 12));
   }
-
 }
-export { Instrument }
+export { Instrument };

@@ -1,5 +1,4 @@
 class Melody {
-
   constructor(maxLength) {
     this.editMode = false;
     this.notes = [];
@@ -15,4 +14,4 @@ class Melody {
   }
 }
 
-export { Melody }
+export { Melody };

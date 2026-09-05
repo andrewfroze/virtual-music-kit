@@ -9,17 +9,14 @@ class Custom {
     const oscillator = this.audioContext.createOscillator();
     const gain = this.audioContext.createGain();
 
-    oscillator.type = 'square';
+    oscillator.type = "square";
 
     oscillator.frequency.setValueAtTime(frequency, now);
     oscillator.frequency.exponentialRampToValueAtTime(
       frequency * 3,
-      now + 0.08
+      now + 0.08,
     );
-    oscillator.frequency.exponentialRampToValueAtTime(
-      frequency,
-      now + 0.15
-    );
+    oscillator.frequency.exponentialRampToValueAtTime(frequency, now + 0.15);
 
     gain.gain.setValueAtTime(0, now);
     gain.gain.linearRampToValueAtTime(0.5, now + 0.02);

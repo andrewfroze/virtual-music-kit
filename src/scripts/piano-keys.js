@@ -1,10 +1,10 @@
 function dispatchKeyDownEvent(keyElement) {
-  keyElement.dispatchEvent(new MouseEvent('mousedown'));
-  keyElement.classList.add('active');
+  keyElement.dispatchEvent(new MouseEvent("mousedown"));
+  keyElement.classList.add("active");
 }
 
 function dispatchKeyUpEvent(keyElement) {
-  keyElement.classList.remove('active');
+  keyElement.classList.remove("active");
 }
 
-export { dispatchKeyDownEvent, dispatchKeyUpEvent }
+export { dispatchKeyDownEvent, dispatchKeyUpEvent };

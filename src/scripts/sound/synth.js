@@ -9,7 +9,7 @@ class Synth {
     const oscillator = this.audioContext.createOscillator();
     const gain = this.audioContext.createGain();
 
-    oscillator.type = 'sawtooth';
+    oscillator.type = "sawtooth";
     oscillator.frequency.setValueAtTime(frequency, now);
 
     gain.gain.setValueAtTime(0, now);
