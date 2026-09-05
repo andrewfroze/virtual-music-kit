@@ -6,6 +6,7 @@ import { dispatchKeyDownEvent, dispatchKeyUpEvent } from "./piano-keys";
 import { getRandomValueFromArray } from "./random";
 import { Melody } from "./sound/melody";
 import { parseKeyLabel } from "./keyboard/key";
+import reassignIconUrl from '../images/reassign-icon.svg';
 
 const exampleNotesCount = 5;
 const lightKeysCount = 10;
@@ -197,7 +198,7 @@ pianoKeysHolder.append(darkKeysHolder);
 let reassignIconSvgDocument;
 
 async function loadReassignKeyIcon() {
-  const response = await fetch("/src/images/reassign-icon.svg");
+  const response = await fetch(reassignIconUrl);
   const svgText = await response.text();
   const parser = new DOMParser();
   reassignIconSvgDocument = parser.parseFromString(svgText, "image/svg+xml");
