@@ -1,0 +1,336 @@
+$background-color: #ffffff;
+$piano-color: #ffffff;
+$piano-border-color: #e3e2e2;
+$piano-light-key-color: #ffffff;
+$piano-light-key-hover-color: #ffffffbd;
+$piano-light-key-active-color: #ffb0b0c5;
+$piano-light-key-assigned-key-text-color: #000000;
+$piano-dark-key-color: #000000;
+$piano-dark-key-hover-color: #424242;
+$piano-dark-key-active-color: #001076;
+$piano-dark-key-assigned-key-text-color: #ffffff;
+
+$piano-keys-holder-color: #000000;
+
+html {
+  font-size: 1.5vw;
+}
+
+body {
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  background-color: $background-color;
+  padding: 3vw;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 10vh;
+  align-items: center;
+  justify-content: center;
+}
+
+.piano {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  gap: 0.5vh;
+  box-sizing: border-box;
+
+  width: fit-content;
+  height: fit-content;
+
+  border: 2px solid $piano-border-color;
+  border-radius: 2vw;
+  background-color: $piano-color;
+}
+
+.piano__cover {
+  z-index: 999;
+  background-color: #424242b0;
+  position: absolute;
+  inset: 0;
+  border-radius: 2vw;
+}
+
+.piano__control-panel {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  font-size: clamp(12px, 1vw, 16px);
+  gap: 10px;
+  padding: 10px;
+}
+
+.piano__control-panel__mode-panel-holder {
+  display: flex;
+  flex-shrink: 0;
+
+  height: fit-content;
+
+  border: 2px solid $piano-border-color;
+  border-radius: 1vw;
+
+  margin: 0;
+}
+
+.piano__control-panel__mode-panel-holder__mode-holder {
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+  height: fit-content;
+  padding: 5px;
+}
+
+.piano__control-panel__mode-panel-holder__melody-container {
+  display: flex;
+  flex: 1 1 0;
+
+  min-width: 300px;
+  height: fit-content;
+
+  border: 2px solid $piano-border-color;
+  border-radius: 1vw;
+
+  margin: 0;
+  padding: 1vw 1vh;
+}
+
+.piano__control-panel__mode-panel-holder__melody-container__piano-melody-editor {
+  display: flex;
+  flex: 1 1 20px;
+
+  flex-wrap: wrap;
+
+  height: fit-content;
+
+  gap: 5px;
+  padding: 3px;
+  margin: 3px 0;
+
+  background-color: $piano-border-color;
+  border: 1px solid $piano-border-color;
+  border-radius: 0.3vw;
+
+  &.edit {
+    background-color: $piano-color;
+  }
+}
+
+.piano__control-panel__mode-panel-holder__melody-container__piano-melody-editor__note {
+  position: relative;
+
+  background-color: $piano-color;
+  border-radius: 0.2wv;
+  padding: 2px 5px;
+  border: 1px solid $piano-border-color;
+  padding-right: 0.9em;
+}
+
+.piano__control-panel__mode-panel-holder__melody-container__piano-melody-editor__note__cross-icon {
+  position: absolute;
+  display: none;
+
+  top: 10%;
+  right: 5%;
+
+  width: 20%;
+  aspect-ratio: 1;
+  color: gray;
+
+  cursor: pointer;
+
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+
+    top: 50%;
+    left: 50%;
+
+    width: 100%;
+    height: 1px;
+
+    background: currentColor;
+  }
+
+  &::before {
+    transform: translate(-50%, -50%) rotate(45deg);
+  }
+
+  &::after {
+    transform: translate(-50%, -50%) rotate(-45deg);
+  }
+}
+
+.edit
+  .piano__control-panel__mode-panel-holder__melody-container__piano-melody-editor__note__cross-icon {
+  display: block;
+}
+
+@media (hover: hover) {
+  .piano__control-panel__mode-panel-holder__melody-container__piano-melody-editor__note__cross-icon:hover {
+    color: red;
+  }
+}
+
+.piano__keys-holder {
+  position: relative;
+  width: fit-content;
+  height: fit-content;
+  flex-grow: 1.5;
+  background-color: $piano-keys-holder-color;
+  border-radius: 1.5vw;
+  margin: 1vw;
+  padding: 0.5vw;
+}
+
+.piano__keys-holder__light-key-holder {
+  display: flex;
+  gap: 0.3vw;
+
+  .piano__keys-holder__light-key {
+    &:first-child {
+      border-top-left-radius: 1.5vw;
+    }
+
+    &:last-child {
+      border-top-right-radius: 1.5vw;
+    }
+  }
+}
+
+.piano__keys-holder__light-key {
+  flex: 0 0 auto;
+  min-width: 30px;
+  max-width: 100px;
+  height: 50vh;
+  background-color: $piano-light-key-color;
+  border-bottom-left-radius: 1.5vw;
+  border-bottom-right-radius: 1.5vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  cursor: pointer;
+
+  @media (hover: hover) {
+    &:hover {
+      background-color: $piano-light-key-hover-color;
+    }
+  }
+
+  &.active {
+    background-color: $piano-light-key-active-color;
+  }
+
+  &.edit {
+    background-color: rgb(161, 161, 6);
+  }
+}
+
+.piano__keys-holder__dark-key-holder {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.piano_keys-holder__dark-key-holder__dark-key {
+  pointer-events: auto;
+  position: absolute;
+  height: 28vh;
+  min-width: 15px;
+  max-width: 50px;
+  background-color: $piano-dark-key-color;
+  border-bottom-left-radius: 1vw;
+  border-bottom-right-radius: 1vw;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  cursor: pointer;
+  color: $piano-dark-key-assigned-key-text-color;
+
+  @media (hover: hover) {
+    &:hover {
+      background-color: $piano-dark-key-hover-color;
+    }
+  }
+
+  &.active {
+    background-color: $piano-dark-key-active-color;
+  }
+
+  &.edit {
+    background-color: rgb(192, 154, 0);
+  }
+}
+
+.piano__keys-holder__dark-key__assigned-key-label,
+.piano__keys-holder__light-key__assigned-key-label {
+  aspect-ratio: 1 / 1;
+  padding: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+.piano__keys-holder__light-key__assigned-key-label {
+  font-size: clamp(12px, 3vw, 30px);
+  color: $piano-light-key-assigned-key-text-color;
+}
+
+.piano__keys-holder__dark-key__assigned-key-label {
+  font-size: clamp(8px, 2vw, 25px);
+}
+
+.piano__control-panel__mode-panel-holder__melody-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.piano__keys-holder__light-key__reassign-key-icon,
+.piano__keys-holder__light-key__reassign-key-icon {
+  width: 30%;
+
+  @media (hover: hover) {
+    &:hover {
+      color: red;
+    }
+  }
+}
+
+.overlay {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  gap: 1vh;
+  width: 100%;
+  height: 100%;
+  background-color: #2f2f2f75;
+  justify-content: center;
+  align-items: center;
+}
+
+.overlay__assign-button-modal {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  width: fit-content;
+  height: fit-content;
+  background-color: $piano-color;
+  border: 2px solid $piano-border-color;
+  border-radius: 1vw;
+  padding: 10px;
+}
+
+.blured {
+  filter: blur(1.5px);
+}
+
+.hidden {
+  display: none;
+}
